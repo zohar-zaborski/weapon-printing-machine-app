@@ -55,16 +55,4 @@ export const printCustomization = async (customizationId: number) => {
   return response.data;
 };
 
-/**
- * Fetch all parts for customization.
- */
-export const getParts = async () => {
-  const token = localStorage.getItem('token');
-  if (!token) throw new Error('Unauthorized: No token found.');
 
-  const response = await axios.get(`${API_URL}/weapons/parts`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  return response.data;
-};

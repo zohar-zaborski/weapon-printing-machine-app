@@ -11,8 +11,9 @@ export interface Weapon {
   // Define the structure of a Part
   export interface Part {
     id: number;
+    type: string;
     name: string;
-    compatibleWeapons: string | string[]; // CSV string or parsed array
+    compatibleWeapons: string[]; // Array of compatible weapon names
   }
   
   
