@@ -64,6 +64,7 @@ const Customizer: React.FC = () => {
     setSelectedParts((prev) =>
       isSelected ? [...prev, partId] : prev.filter((id) => id !== partId)
     );
+    console.log('Selected Parts:', selectedParts);
   };
 
   // Handle customization creation
