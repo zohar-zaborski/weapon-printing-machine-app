@@ -7,6 +7,8 @@ import { getParts } from "../services/parts.service";
 import { Weapon, Part } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getWeapons } from "../services/weapons.service";
+import logo from "../media/images/print_logo.png";
+import AppNavbar from "./AppNavbar";
 
 const Dashboard: React.FC = () => {
   const [isAuthenticated] = useAtom(authAtom);
@@ -87,39 +89,8 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      {/* Navigation Bar */}
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <div className="container-fluid">
-          <span className="navbar-brand">Dashboard</span>
-          <div className="collapse navbar-collapse justify-content-end">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link className="nav-link" to="/customize">
-                  Customize
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/saved-weapons">
-                  Saved Weapons
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/print-jobs">
-                  Print Jobs
-                </Link>
-              </li>
-              <li className="nav-item">
-                <button
-                  className="btn btn-danger btn-sm nav-link"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+        <AppNavbar/>
+      
 
       {/* Main Content */}
       <div className="container mt-5">

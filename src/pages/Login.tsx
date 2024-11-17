@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Navbar, Form, Button, Alert, Card, Row, Col } from 'react-bootstrap';
 import authService from '../services/auth.service';
+import AppNavbar from '../components/AppNavbar';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -22,11 +23,7 @@ const Login: React.FC = () => {
   return (
     <>
       {/* Navigation Bar */}
-      <Navbar bg="dark" variant="dark" className="mb-5">
-        <Container>
-          <Navbar.Brand href="/">Weapon Customizer</Navbar.Brand>
-        </Container>
-      </Navbar>
+      <AppNavbar />
 
       {/* Login Box */}
       <Container>

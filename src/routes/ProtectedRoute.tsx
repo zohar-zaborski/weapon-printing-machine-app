@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { authAtom } from '../atoms/authAtoms';
 
 interface ProtectedRouteProps {
-  children: React.ReactElement; // The protected content (e.g., <Dashboard />)
+  children: React.ReactElement; 
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {

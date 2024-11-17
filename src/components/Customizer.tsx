@@ -11,6 +11,8 @@ import authService from "../services/auth.service";
 import { Weapon, Part, Customization } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getWeapons } from "../services/weapons.service";
+import { Navbar } from "react-bootstrap";
+import AppNavbar from "./AppNavbar";
 
 const Customizer: React.FC = () => {
   const [, setWeapons] = useAtom(weaponsAtom); // Setter for weapons atom
@@ -116,39 +118,7 @@ const Customizer: React.FC = () => {
 
   return (
     <div>
-      {/* Navigation Bar */}
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <div className="container-fluid">
-          <span className="navbar-brand">Customizer</span>
-          <div className="collapse navbar-collapse justify-content-end">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link className="nav-link" to="/dashboard">
-                  Dashboard
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/saved-weapons">
-                  Saved Weapons
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/print-jobs">
-                  Print Job
-                </Link>
-              </li>
-              <li className="nav-item">
-                <button
-                  className="btn btn-danger btn-sm nav-link"
-                  onClick={authService.logout}
-                >
-                  Logout
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <AppNavbar />
 
       {/* Main Content */}
       <div className="container mt-5">

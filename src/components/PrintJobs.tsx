@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AppNavbar from './AppNavbar';
 
 interface PrintJob {
   id: number;
@@ -50,31 +51,7 @@ const PrintJobs: React.FC = () => {
 
   return (
     <div>
-      {/* Navigation Bar */}
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <div className="container-fluid">
-          <span className="navbar-brand">Print Jobs</span>
-          <div className="collapse navbar-collapse justify-content-end">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link className="nav-link" to="/dashboard">
-                  Dashboard
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/customize">
-                  Customize
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/saved-weapons">
-                  Saved Weapons
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <AppNavbar/>
 
       {/* Main Content */}
       <div className="container mt-5">

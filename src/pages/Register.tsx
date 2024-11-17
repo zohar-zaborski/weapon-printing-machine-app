@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Navbar, Form, Button, Alert, Card, Row, Col } from 'react-bootstrap';
 import authService from '../services/auth.service';
+import AppNavbar from '../components/AppNavbar';
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -14,7 +15,7 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await authService.register(username, password, email);
+      await authService.register(username, email, password);
       setMessage('Registration successful! Redirecting to login...');
       setTimeout(() => navigate('/login'), 2000);
     } catch (err: any) {
@@ -29,11 +30,7 @@ const Register: React.FC = () => {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" className="mb-5">
-        <Container>
-          <Navbar.Brand href="/">Weapon Customizer</Navbar.Brand>
-        </Container>
-      </Navbar>
+      <AppNavbar />
       <Container>
         <Row className="justify-content-center">
           <Col md={6}>

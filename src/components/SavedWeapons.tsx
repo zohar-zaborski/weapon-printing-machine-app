@@ -1,46 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { useAtom } from 'jotai';
-import { Link } from 'react-router-dom';
-import { authAtom } from '../atoms/authAtoms';
-import { getCustomizations, printCustomization, deleteCustomization } from '../services/customization.service';
-import authService from '../services/auth.service';
-import { Weapon, Customization } from '../types';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { getWeaponById } from '../services/weapons.service';
+import React, { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { Link } from "react-router-dom";
+import { authAtom } from "../atoms/authAtoms";
+import {
+  getCustomizations,
+  printCustomization,
+  deleteCustomization,
+} from "../services/customization.service";
+import authService from "../services/auth.service";
+import { Weapon, Customization } from "../types";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { getWeaponById } from "../services/weapons.service";
+import AppNavbar from "../components/AppNavbar";
 
 const SavedCustomizations: React.FC = () => {
   const [isAuthenticated] = useAtom(authAtom);
   const [customizations, setCustomizations] = useState<Customization[]>([]);
-  const [weaponDetails, setWeaponDetails] = useState<{ [key: number]: Weapon }>({});
+  const [weaponDetails, setWeaponDetails] = useState<{ [key: number]: Weapon }>(
+    {}
+  );
   const [message, setMessage] = useState<string | null>(null);
 
   // Fetch customizations and weapon details
   useEffect(() => {
     const fetchCustomizationsAndWeapons = async () => {
-        try {
-          console.log("Fetching customizations...");
-          const fetchedCustomizations = await getCustomizations();
-          console.log("Customizations fetched:", fetchedCustomizations);
-          setCustomizations(fetchedCustomizations);
-    
-          
-        } catch (error) {
-          console.error('Error details:', error);
-          setMessage('Failed to fetch customizations or weapon details.');
-        }
-      };
-    
-      fetchCustomizationsAndWeapons();
-    }, []);
+      try {
+        console.log("Fetching customizations...");
+        const fetchedCustomizations = await getCustomizations();
+        console.log("Customizations fetched:", fetchedCustomizations);
+        setCustomizations(fetchedCustomizations);
+      } catch (error) {
+        console.error("Error details:", error);
+        setMessage("Failed to fetch customizations or weapon details.");
+      }
+    };
+
+    fetchCustomizationsAndWeapons();
+  }, []);
 
   // Handle Print
   const handlePrint = async (customizationId: number) => {
     try {
       await printCustomization(customizationId);
-      setMessage('Customization sent to print successfully!');
+      setMessage("Customization sent to print successfully!");
     } catch (error) {
-      console.error('Failed to send customization to print:', error);
-      setMessage('Failed to send customization to print.');
+      console.error("Failed to send customization to print:", error);
+      setMessage("Failed to send customization to print.");
     }
   };
 
@@ -48,14 +53,14 @@ const SavedCustomizations: React.FC = () => {
   const handleDelete = async (customizationId: number) => {
     try {
       await deleteCustomization(customizationId);
-      setMessage('Customization deleted successfully!');
+      setMessage("Customization deleted successfully!");
       // Remove the deleted customization from the state
       setCustomizations((prev) =>
         prev.filter((customization) => customization.id !== customizationId)
       );
     } catch (error) {
-      console.error('Failed to delete customization:', error);
-      setMessage('Failed to delete customization.');
+      console.error("Failed to delete customization:", error);
+      setMessage("Failed to delete customization.");
     }
   };
 
@@ -65,36 +70,7 @@ const SavedCustomizations: React.FC = () => {
 
   return (
     <div>
-      {/* Navigation Bar */}
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <div className="container-fluid">
-          <span className="navbar-brand">Saved Customizations</span>
-          <div className="collapse navbar-collapse justify-content-end">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link className="nav-link" to="/customize">
-                  Customize
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/dashboard">
-                  Dashboard
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/print-jobs">
-                  Print Jobs
-                </Link>
-              </li>
-              <li className="nav-item">
-                <button className="btn btn-danger btn-sm nav-link" onClick={authService.logout}>
-                  Logout
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <AppNavbar />
 
       {/* Saved Customizations */}
       <div className="container mt-5">
@@ -106,10 +82,8 @@ const SavedCustomizations: React.FC = () => {
           <div className="list-group">
             {customizations.map((customization, index) => (
               <div key={index} className="list-group-item">
-                <h5>
-                  Weapon ID: {customization.weapon_id}
-                </h5>
-                <p>Parts: {customization.parts.join(', ')}</p>
+                <h5>Weapon ID: {customization.weapon_id}</h5>
+                <p>Parts: {customization.parts.join(", ")}</p>
                 <p>Print Job ID: {customization.id}</p>
                 <div className="d-flex justify-content-between">
                   <button

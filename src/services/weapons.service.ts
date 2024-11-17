@@ -31,8 +31,5 @@ export const getWeapons = async () => {
   
     return response.data;
   };
-  export default {
-    getWeaponById,
-    getWeapons, // Export the new method
-  };
+ 
   
