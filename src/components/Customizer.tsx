@@ -59,7 +59,7 @@ const Customizer: React.FC = () => {
   }, []);
 
   const handleWeaponChange = (weaponId: number) => {
-    console.log("Weapon selected:", weaponId);
+    console.log("Weapon selected from dropdown:", weaponId);
     setSelectedWeapon(weaponId);
     setSelectedParts([]); // Reset selected parts when a new weapon is selected
   };
@@ -111,6 +111,8 @@ const Customizer: React.FC = () => {
     : parts;
 
   console.log("Filtered parts for selected weapon:", filteredParts);
+  console.log("Selected Weapon ID:", selectedWeapon);
+  console.log("Selected Parts IDs:", selectedParts);
 
   return (
     <div>
@@ -155,27 +157,32 @@ const Customizer: React.FC = () => {
         <div className="row">
           {/* Weapon Dropdown */}
           <div className="col-md-6 mb-4">
-            <h3>Select Weapon</h3>
-            <select
-              className="form-select"
-              onChange={(e) => {
-                const weaponId = parseInt(e.target.value, 10);
-                if (!isNaN(weaponId)) {
-                  handleWeaponChange(weaponId);
-                }
-              }}
-              value={selectedWeapon || ""}
-            >
-              <option value="" disabled>
-                Select a weapon
-              </option>
-              {weapons.map((weapon) => (
-                <option key={weapon.id} value={weapon.id}>
-                  {weapon.name}
-                </option>
-              ))}
-            </select>
-          </div>
+  <h3>Select Weapon</h3>
+  <select
+    className="form-select"
+    onChange={(e) => {
+      const weaponId = Number(e.target.value); // Use Number for clarity
+      console.log("Dropdown change event. Raw value:", e.target.value); // Log raw value
+      console.log("Parsed Weapon ID:", weaponId); // Log parsed ID
+      if (!isNaN(weaponId)) {
+        handleWeaponChange(weaponId); // Call handler with parsed ID
+      } else {
+        console.error("Invalid weapon ID selected:", e.target.value);
+      }
+    }}
+    value={selectedWeapon || ""}
+  >
+    <option value="" disabled>
+      Select a weapon
+    </option>
+    {weapons.map((weapon) => (
+      <option key={weapon.id} value={weapon.id}>
+        {weapon.name}
+      </option>
+    ))}
+  </select>
+</div>
+
 
           {/* Parts Selection */}
           <div className="col-md-6 mb-4">

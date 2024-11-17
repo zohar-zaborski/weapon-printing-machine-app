@@ -25,7 +25,23 @@ export const createCustomization = async (payload: {
     parts: number[];
   }) => {
     try {
-      const response = await axios.post("/customization/customize", payload);
+      // Retrieve the token from localStorage or sessionStorage
+      const token = localStorage.getItem("token"); // Assuming you store the token in localStorage
+      if (!token) {
+        throw new Error("Authentication token is missing. Please log in again.");
+      }
+  
+      // Make the POST request with the token included in the headers
+      const response = await axios.post(
+        `${API_URL}/customizations/customize`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+          },
+        }
+      );
+  
       return response.data; // Assuming the API returns the created customization
     } catch (error) {
       console.error("Failed to create customization:", error);
@@ -51,4 +67,23 @@ export const printCustomization = async (customizationId: number) => {
   return response.data;
 };
 
+export const deleteCustomization = async (customizationId: number) => {
+    try {
+      const token = localStorage.getItem('token'); // Retrieve the token from local storage
+      if (!token) {
+        throw new Error('Authentication token is missing');
+      }
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+        },
+      };
+  
+      await axios.delete(`${API_URL}/customizations/customize/${customizationId}`, config);
+    } catch (error) {
+      console.error('Failed to delete customization:', error);
+      throw error;
+    }
+  };
 

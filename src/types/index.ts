@@ -20,7 +20,7 @@ export interface Weapon {
   // Define the structure for customizing a weapon
   export interface Customization {
     id: number; // Add this line
-    weaponId: number;
+    weapon_id: number;
     parts: string[]; // Array of part IDs
   }
   

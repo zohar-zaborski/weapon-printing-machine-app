@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { Link } from 'react-router-dom';
 import { authAtom } from '../atoms/authAtoms';
-import { getCustomizations, printCustomization } from '../services/customization.service';
+import { getCustomizations, printCustomization, deleteCustomization } from '../services/customization.service';
 import authService from '../services/auth.service';
 import { Weapon, Customization } from '../types';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,27 +17,23 @@ const SavedCustomizations: React.FC = () => {
   // Fetch customizations and weapon details
   useEffect(() => {
     const fetchCustomizationsAndWeapons = async () => {
-      try {
-        // Fetch customizations
-        const fetchedCustomizations = await getCustomizations();
-        setCustomizations(fetchedCustomizations);
-
-        // Fetch weapon details for each customization
-        const fetchedWeapons: { [key: number]: Weapon } = {};
-        for (const customization of fetchedCustomizations) {
-          const weapon = await getWeaponById(customization.weaponId);
-          fetchedWeapons[customization.weaponId] = weapon;
+        try {
+          console.log("Fetching customizations...");
+          const fetchedCustomizations = await getCustomizations();
+          console.log("Customizations fetched:", fetchedCustomizations);
+          setCustomizations(fetchedCustomizations);
+    
+          
+        } catch (error) {
+          console.error('Error details:', error);
+          setMessage('Failed to fetch customizations or weapon details.');
         }
-        setWeaponDetails(fetchedWeapons);
-      } catch (error) {
-        console.error('Failed to fetch customizations or weapon details:', error);
-        setMessage('Failed to fetch customizations or weapon details.');
-      }
-    };
+      };
+    
+      fetchCustomizationsAndWeapons();
+    }, []);
 
-    fetchCustomizationsAndWeapons();
-  }, []);
-
+  // Handle Print
   const handlePrint = async (customizationId: number) => {
     try {
       await printCustomization(customizationId);
@@ -45,6 +41,21 @@ const SavedCustomizations: React.FC = () => {
     } catch (error) {
       console.error('Failed to send customization to print:', error);
       setMessage('Failed to send customization to print.');
+    }
+  };
+
+  // Handle Delete Customization
+  const handleDelete = async (customizationId: number) => {
+    try {
+      await deleteCustomization(customizationId);
+      setMessage('Customization deleted successfully!');
+      // Remove the deleted customization from the state
+      setCustomizations((prev) =>
+        prev.filter((customization) => customization.id !== customizationId)
+      );
+    } catch (error) {
+      console.error('Failed to delete customization:', error);
+      setMessage('Failed to delete customization.');
     }
   };
 
@@ -95,14 +106,25 @@ const SavedCustomizations: React.FC = () => {
           <div className="list-group">
             {customizations.map((customization, index) => (
               <div key={index} className="list-group-item">
-                <h5>Weapon: {weaponDetails[customization.weaponId]?.name || 'Loading...'}</h5>
+                <h5>
+                  Weapon ID: {customization.weapon_id}
+                </h5>
                 <p>Parts: {customization.parts.join(', ')}</p>
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => handlePrint(customization.id)}
-                >
-                  Print Customization
-                </button>
+                <p>Print Job ID: {customization.id}</p>
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => handlePrint(customization.id)}
+                  >
+                    Print Customization
+                  </button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(customization.id)}
+                  >
+                    Delete Customization
+                  </button>
+                </div>
               </div>
             ))}
           </div>
