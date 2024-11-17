@@ -127,6 +127,6 @@ const getWeapons = async () => {
     login,
     logout,
     getProtectedResource,
-    getWeapons, // Export the new method
+  
   };
   

@@ -20,21 +20,17 @@ export const getCustomizations = async () => {
 /**
  * Create a new customization.
  */
-export const createCustomization = async (weaponId: number, parts: number[]) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('Unauthorized: No token found.');
+export const createCustomization = async (payload: {
+    weapon_id: number;
+    parts: number[];
+  }) => {
+    try {
+      const response = await axios.post("/customization/customize", payload);
+      return response.data; // Assuming the API returns the created customization
+    } catch (error) {
+      console.error("Failed to create customization:", error);
+      throw error;
     }
-  
-    const response = await axios.post(
-      `${API_URL}/customizations/customize`,
-      { weapon_id: weaponId, parts },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-  
-    return response.data; // Returns the saved customization object
   };
 
 /**

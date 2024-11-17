@@ -5,7 +5,7 @@ export interface Weapon {
     id: number;                   // Unique ID for the weapon
     name: string;                 // Name of the weapon
     description?: string;         // Optional description
-    compatibleParts: string[];    // Array of compatible part IDs (parsed from CSV)
+    compatible_parts: string | string[];    // Array of compatible part IDs (parsed from CSV)
   }
   
   // Define the structure of a Part
@@ -13,14 +13,15 @@ export interface Weapon {
     id: number;
     type: string;
     name: string;
-    compatibleWeapons: string[]; // Array of compatible weapon names
+    compatible_weapons: string[]; // Array of compatible weapon names
   }
   
   
   // Define the structure for customizing a weapon
   export interface Customization {
-    weaponId: number;             // ID of the selected weapon
-    parts: number[];              // Array of selected part IDs
+    id: number; // Add this line
+    weaponId: number;
+    parts: string[]; // Array of part IDs
   }
   
   // Define the structure of a Customized Weapon

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
+import { Link } from "react-router-dom";
 import { weaponsAtom, partsAtom } from "../atoms/customizationAtoms";
 import {
   getCustomizations,
   createCustomization,
 } from "../services/customization.service";
-
 import { getParts } from "../services/parts.service";
 import authService from "../services/auth.service";
 import { Weapon, Part, Customization } from "../types";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { getWeapons } from "../services/weapons.service";
 
 const Customizer: React.FC = () => {
   const [, setWeapons] = useAtom(weaponsAtom); // Setter for weapons atom
@@ -20,12 +22,15 @@ const Customizer: React.FC = () => {
   const [customizations, setCustomizations] = useState<Customization[]>([]);
   const [message, setMessage] = useState<string | null>(null);
 
-  // Fetch weapons and parts on component mount
   useEffect(() => {
     const fetchWeaponsAndParts = async () => {
       try {
-        const fetchedWeapons = await authService.getWeapons();
+        const fetchedWeapons = await getWeapons();
+        console.log("Fetched Weapons:", fetchedWeapons);
+
         const fetchedParts = await getParts();
+        console.log("Fetched Parts:", fetchedParts);
+
         setWeapons(fetchedWeapons); // Update global state
         setParts(fetchedParts); // Update global state
         setLocalWeapons(fetchedWeapons); // Update local state
@@ -39,11 +44,11 @@ const Customizer: React.FC = () => {
     fetchWeaponsAndParts();
   }, [setWeapons, setParts]);
 
-  // Fetch saved customizations on component mount
   useEffect(() => {
     const fetchCustomizations = async () => {
       try {
         const data = await getCustomizations();
+        console.log("Fetched Customizations:", data);
         setCustomizations(data);
       } catch (error) {
         console.error("Failed to fetch customizations:", error);
@@ -53,32 +58,41 @@ const Customizer: React.FC = () => {
     fetchCustomizations();
   }, []);
 
-  // Handle weapon selection
   const handleWeaponChange = (weaponId: number) => {
-    console.log("Selected Weapon ID:", weaponId); // Debugging
-    setSelectedWeapon(weaponId); // Update state
+    console.log("Weapon selected:", weaponId);
+    setSelectedWeapon(weaponId);
+    setSelectedParts([]); // Reset selected parts when a new weapon is selected
   };
 
-  // Handle part selection
   const handlePartChange = (partId: number, isSelected: boolean) => {
+    console.log(
+      `Part ${partId} selection changed. Is selected: ${isSelected}`
+    );
     setSelectedParts((prev) =>
       isSelected ? [...prev, partId] : prev.filter((id) => id !== partId)
     );
-    console.log('Selected Parts:', selectedParts);
   };
 
-  // Handle customization creation
   const handleCreateCustomization = async () => {
     if (!selectedWeapon || selectedParts.length === 0) {
+      console.log("Validation failed: No weapon or parts selected.");
       setMessage("Please select a weapon and at least one part.");
       return;
     }
 
     try {
-      const newCustomization = await createCustomization(
-        selectedWeapon,
-        selectedParts
-      );
+      // Prepare payload in the specified format
+      const payload = {
+        weapon_id: selectedWeapon,
+        parts: selectedParts,
+      };
+
+      console.log("Payload being sent to the backend:", payload);
+
+      // Call the API with the payload
+      const newCustomization = await createCustomization(payload);
+      console.log("Response from the backend:", newCustomization);
+
       setMessage(`Customization created with ID: ${newCustomization.id}`);
       setCustomizations((prev) => [...prev, newCustomization]); // Add to saved customizations
     } catch (error) {
@@ -87,77 +101,122 @@ const Customizer: React.FC = () => {
     }
   };
 
+  // Filter parts based on the selected weapon
+  const filteredParts = selectedWeapon
+    ? parts.filter((part) =>
+        part.compatible_weapons.includes(
+          weapons.find((weapon) => weapon.id === selectedWeapon)?.name || ""
+        )
+      )
+    : parts;
+
+  console.log("Filtered parts for selected weapon:", filteredParts);
+
   return (
     <div>
-      <h2>Customize Your Weapon</h2>
-      {message && <p>{message}</p>}
+      {/* Navigation Bar */}
+      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+        <div className="container-fluid">
+          <span className="navbar-brand">Customizer</span>
+          <div className="collapse navbar-collapse justify-content-end">
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <Link className="nav-link" to="/dashboard">
+                  Dashboard
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/saved-weapons">
+                  Saved Weapons
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/print-jobs">
+                  Print Job
+                </Link>
+              </li>
+              <li className="nav-item">
+                <button
+                  className="btn btn-danger btn-sm nav-link"
+                  onClick={authService.logout}
+                >
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
 
-      {/* Weapon Dropdown */}
-      <div>
-        <h3>Select Weapon</h3>
-        <select
-          onChange={(e) => {
-            const value = e.target.value;
-            console.log("Selected value from dropdown:", value); // Debugging the raw value
-            const weaponId = parseInt(value, 10); // Convert the value to an integer
-            if (!isNaN(weaponId)) {
-              handleWeaponChange(weaponId);
-            } else {
-              console.error("Invalid weapon ID selected:", value);
-            }
-          }}
-          value={selectedWeapon || ""}
-        >
-          <option value="" disabled>
-            Select a weapon
-          </option>
-          {weapons.map((weapon) => (
-            <option key={weapon.id} value={weapon.id}>
-              {weapon.name} {/* Weapon name is displayed, but ID is passed */}
-            </option>
-          ))}
-        </select>
+      {/* Main Content */}
+      <div className="container mt-5">
+        {message && <div className="alert alert-info">{message}</div>}
+
+        <div className="row">
+          {/* Weapon Dropdown */}
+          <div className="col-md-6 mb-4">
+            <h3>Select Weapon</h3>
+            <select
+              className="form-select"
+              onChange={(e) => {
+                const weaponId = parseInt(e.target.value, 10);
+                if (!isNaN(weaponId)) {
+                  handleWeaponChange(weaponId);
+                }
+              }}
+              value={selectedWeapon || ""}
+            >
+              <option value="" disabled>
+                Select a weapon
+              </option>
+              {weapons.map((weapon) => (
+                <option key={weapon.id} value={weapon.id}>
+                  {weapon.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Parts Selection */}
+          <div className="col-md-6 mb-4">
+            <h3>Select Parts</h3>
+            {filteredParts.length === 0 ? (
+              <p>No compatible parts available for the selected weapon.</p>
+            ) : (
+              filteredParts.map((part) => (
+                <div key={part.id} className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value={part.id}
+                    id={`part-${part.id}`}
+                    onChange={(e) =>
+                      handlePartChange(Number(e.target.value), e.target.checked)
+                    }
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor={`part-${part.id}`}
+                  >
+                    {part.name}
+                  </label>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-12">
+            <button
+              className="btn btn-primary"
+              onClick={handleCreateCustomization}
+            >
+              Save Customization
+            </button>
+          </div>
+        </div>
       </div>
-
-      {/* Parts Dropdown */}
-      <div>
-        <h3>Select Parts</h3>
-        {parts.length === 0 ? (
-          <p>No parts available.</p>
-        ) : (
-          parts.map((part) => (
-            <div key={part.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  value={part.id}
-                  onChange={(e) =>
-                    handlePartChange(Number(e.target.value), e.target.checked)
-                  }
-                />
-                {part.name}
-              </label>
-            </div>
-          ))
-        )}
-      </div>
-
-      <button onClick={handleCreateCustomization}>Save Customization</button>
-
-      {/* Display Saved Customizations */}
-      <h3>Saved Customizations</h3>
-      {customizations.length === 0 ? (
-        <p>No customizations available.</p>
-      ) : (
-        <ul>
-          {customizations.map((customization, index) => (
-            <li key={index}>
-              <p>Weapon ID: {customization.weaponId}</p>
-              <p>Parts: {customization.parts.join(", ")}</p>
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 };
