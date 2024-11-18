@@ -18,7 +18,7 @@ const PrintJobs: React.FC = () => {
   useEffect(() => {
     const fetchPrintJobs = async () => {
       try {
-        const data = await getPrintJobs(); // Call the service function
+        const data = await getPrintJobs();
         setPrintJobs(data);
       } catch (err) {
         console.error("Failed to fetch print jobs:", err);

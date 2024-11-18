@@ -6,7 +6,7 @@ import { Weapon, Part } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getWeapons } from "../services/weapons.service";
 import AppNavbar from "../components/AppNavbar";
-
+import { upcomingWeapons } from "../mock/upcomingWeapons";
 const Home: React.FC = () => {
   const [isAuthenticated] = useAtom(authAtom);
   const [weapons, setWeapons] = useState<Weapon[]>([]);
@@ -51,11 +51,7 @@ const Home: React.FC = () => {
       fetchWeaponsAndParts();
     }
   }, [isAuthenticated]);
-  const upcomingWeapons = [
-    { name: "Bazooka", compatible_parts: "" },
-    { name: "Uzi", compatible_parts: "" },
-    { name: "Galil", compatible_parts: "" },
-  ];
+  
   // Helper to get part names from part IDs
   const getPartNames = (compatibleParts: string[]) => {
   

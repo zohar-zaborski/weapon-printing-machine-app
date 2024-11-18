@@ -6,7 +6,7 @@ export const printCustomization = async (customizationId: number) => {
   if (!token) throw new Error("Unauthorized: No token found.");
 
   const response = await axios.post(
-    `${REACT_APP_API_URL}/print_jobs/print`,
+    `${REACT_APP_API_URL}/print-jobs/print`,
     { customization_id: customizationId },
     {
       headers: { Authorization: `Bearer ${token}` },
@@ -20,7 +20,7 @@ export const getPrintJobs = async () => {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("Unauthorized: No token found.");
   try {
-    const response = await axios.get(`${REACT_APP_API_URL}/print_jobs/print/jobs`, {
+    const response = await axios.get(`${REACT_APP_API_URL}/print-jobs/jobs`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

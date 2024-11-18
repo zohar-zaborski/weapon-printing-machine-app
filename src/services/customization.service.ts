@@ -1,4 +1,3 @@
-// src/services/customization.service.ts
 import axios from 'axios';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -8,7 +7,7 @@ export const getCustomizations = async () => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Unauthorized: No token found.');
 
-  const response = await axios.get(`${REACT_APP_API_URL}/customizations/customize`, {
+  const response = await axios.get(`${REACT_APP_API_URL}/customize`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -27,7 +26,7 @@ export const createCustomization = async (payload: {
     }
 
     const response = await axios.post(
-      `${REACT_APP_API_URL}/customizations/customize`,
+      `${REACT_APP_API_URL}/customize`,
       payload,
       {
         headers: {
@@ -48,7 +47,7 @@ export const printCustomization = async (customizationId: number) => {
   if (!token) throw new Error('Unauthorized: No token found.');
 
   const response = await axios.post(
-    `${REACT_APP_API_URL}/print_jobs/print?customization_id=${customizationId}`,
+    `${REACT_APP_API_URL}/print-jobs/print?customization_id=${customizationId}`,
     {},
     {
       headers: { Authorization: `Bearer ${token}` },
@@ -71,7 +70,7 @@ export const deleteCustomization = async (customizationId: number) => {
       },
     };
 
-    await axios.delete(`${REACT_APP_API_URL}/customizations/customize/${customizationId}`, config);
+    await axios.delete(`${REACT_APP_API_URL}/customize/${customizationId}`, config);
   } catch (error) {
     console.error('Failed to delete customization:', error);
     throw error;
