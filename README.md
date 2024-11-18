@@ -64,10 +64,10 @@ src/
 
 ## Further Elaboration
 - Possible Features Implementations:
-    `Advanced Exceptions`: Currently, the project utilizes a simple Exceptions configuration. Future enhancements could include a more advanced and customized exceptions.
-    `Adding Logging`:Managing backend with comprehensive logging can be very useful for tracking data and issues that may rise.
-    `Database Integration`: The project now relies on an in-memory repository for simplicity, but future versions could incorporate a database like PostgreSQL or MongoDB. This would support persistence, scalability, and more complex query capabilities for large policy and rule datasets. 
-    `More Fields`: Generating more "Real world" fields, like Unique ID of the weapon, a serial number. More fields:
+    - `More Pages`: Adding a personal page to each weapon when it has more detail, endpoint exists in the server.
+    - `More User options`: My choice was to give the user the option to delete customization, but maybe the user would like to cancel the print job as well.
+    It's also possible to add a counter that will be specific to each weapon, because every weapon has different printing time.
+    - `More Fields`: Generating more "Real world" fields, like Unique ID of the weapon, a serial number. More fields:
                     Color, Magazine Size, etc.
 
 ## Screens
