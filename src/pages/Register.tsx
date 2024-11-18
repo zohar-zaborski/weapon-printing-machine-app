@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Navbar, Form, Button, Alert, Card, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button, Alert, Card, Row, Col } from 'react-bootstrap';
 import authService from '../services/auth.service';
 import AppNavbar from '../components/AppNavbar';
 
@@ -31,7 +31,7 @@ const Register: React.FC = () => {
   return (
     <>
       <AppNavbar />
-      <Container>
+      <Container className="pt-5">
         <Row className="justify-content-center">
           <Col md={6}>
             <Card>

@@ -10,10 +10,10 @@ import { authAtom } from "./atoms/authAtoms";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./components/Dashboard";
 import Customizer from "./components/Customizer"; // Import Customizer component
 import SavedWeapons from "./components/SavedWeapons";
 import PrintJobs from "./components/PrintJobs";
+import Home from "./pages/Home";
 
 const App: React.FC = () => {
   const [isAuthenticated] = useAtom(authAtom);
@@ -25,7 +25,7 @@ const App: React.FC = () => {
         <Route
           path="/"
           element={
-            <Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />
+            <Navigate to={"/login"} replace />
           }
         />
 
@@ -35,10 +35,10 @@ const App: React.FC = () => {
 
         {/* Protected routes */}
         <Route
-          path="/dashboard"
+          path="/home"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <Home />
             </ProtectedRoute>
           }
         />

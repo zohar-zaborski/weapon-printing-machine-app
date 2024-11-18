@@ -1,0 +1,17 @@
+/* Add this CSS */
+.appnavbar {
+    position: sticky; /* Keeps the navbar at the top */
+    top: 0; /* Aligns the navbar to the top of the viewport */
+    z-index: 1000; /* Ensures it is above other content */
+    width: 100%; /* Ensures full width */
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    padding-top: 70px; /* Add spacing equivalent to navbar height */
+  }
+  

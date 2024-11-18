@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Navbar, Form, Button, Alert, Card, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button, Alert, Card, Row, Col } from 'react-bootstrap';
 import authService from '../services/auth.service';
 import AppNavbar from '../components/AppNavbar';
 
@@ -13,7 +13,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       await authService.login(username, password);
-      window.location.href = '/dashboard'; // Redirect to dashboard on successful login
+      window.location.href = '/home'; // Redirect to home on successful login
     } catch (err) {
       console.error('Login failed:', err);
       setError('Invalid username or password. Please try again.');
@@ -22,11 +22,8 @@ const Login: React.FC = () => {
 
   return (
     <>
-      {/* Navigation Bar */}
       <AppNavbar />
-
-      {/* Login Box */}
-      <Container>
+      <Container className="pt-5">
         <Row className="justify-content-center">
           <Col md={6}>
             <Card>

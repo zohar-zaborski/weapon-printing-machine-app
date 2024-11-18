@@ -1,33 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { Link } from "react-router-dom";
 import { authAtom } from "../atoms/authAtoms";
 import {
   getCustomizations,
   printCustomization,
   deleteCustomization,
 } from "../services/customization.service";
-import authService from "../services/auth.service";
-import { Weapon, Customization } from "../types";
+import { Customization } from "../types";
+
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getWeaponById } from "../services/weapons.service";
 import AppNavbar from "../components/AppNavbar";
 
 const SavedCustomizations: React.FC = () => {
   const [isAuthenticated] = useAtom(authAtom);
   const [customizations, setCustomizations] = useState<Customization[]>([]);
-  const [weaponDetails, setWeaponDetails] = useState<{ [key: number]: Weapon }>(
-    {}
-  );
   const [message, setMessage] = useState<string | null>(null);
 
-  // Fetch customizations and weapon details
+  // Fetch customizations
   useEffect(() => {
-    const fetchCustomizationsAndWeapons = async () => {
+    const fetchCustomizations = async () => {
       try {
-        console.log("Fetching customizations...");
         const fetchedCustomizations = await getCustomizations();
-        console.log("Customizations fetched:", fetchedCustomizations);
         setCustomizations(fetchedCustomizations);
       } catch (error) {
         console.error("Error details:", error);
@@ -35,7 +28,7 @@ const SavedCustomizations: React.FC = () => {
       }
     };
 
-    fetchCustomizationsAndWeapons();
+    fetchCustomizations();
   }, []);
 
   // Handle Print
@@ -79,25 +72,33 @@ const SavedCustomizations: React.FC = () => {
         {customizations.length === 0 ? (
           <p>No customizations available.</p>
         ) : (
-          <div className="list-group">
+          <div className="row">
             {customizations.map((customization, index) => (
-              <div key={index} className="list-group-item">
-                <h5>Weapon ID: {customization.weapon_id}</h5>
-                <p>Parts: {customization.parts.join(", ")}</p>
-                <p>Print Job ID: {customization.id}</p>
-                <div className="d-flex justify-content-between">
-                  <button
-                    className="btn btn-primary btn-sm"
-                    onClick={() => handlePrint(customization.id)}
-                  >
-                    Print Customization
-                  </button>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleDelete(customization.id)}
-                  >
-                    Delete Customization
-                  </button>
+              <div key={index} className="col-md-4 mb-4">
+                <div className="card shadow-sm">
+                  <div className="card-body">
+                    <h5 className="card-title">Weapon ID: {customization.weapon_id}</h5>
+                    <p className="card-text">
+                      <strong>Parts:</strong> {customization.parts.join(", ")}
+                    </p>
+                    <p className="card-text">
+                      <strong>Print Job ID:</strong> {customization.id}
+                    </p>
+                    <div className="d-flex justify-content-between">
+                      <button
+                        className="btn btn-primary btn-sm"
+                        onClick={() => handlePrint(customization.id)}
+                      >
+                        Print Customization
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDelete(customization.id)}
+                      >
+                        Delete Customization
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}

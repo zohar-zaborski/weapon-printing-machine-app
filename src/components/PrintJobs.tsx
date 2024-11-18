@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import AppNavbar from './AppNavbar';
+import React, { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import AppNavbar from "./AppNavbar";
+import { getPrintJobs } from "../services/print.service";
 
 interface PrintJob {
   id: number;
@@ -18,16 +18,11 @@ const PrintJobs: React.FC = () => {
   useEffect(() => {
     const fetchPrintJobs = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/print_jobs/print/jobs', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        const data = await response.json();
+        const data = await getPrintJobs(); // Call the service function
         setPrintJobs(data);
       } catch (err) {
-        console.error('Failed to fetch print jobs:', err);
-        setError('Failed to fetch print jobs. Please try again.');
+        console.error("Failed to fetch print jobs:", err);
+        setError("Failed to fetch print jobs. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -51,7 +46,7 @@ const PrintJobs: React.FC = () => {
 
   return (
     <div>
-      <AppNavbar/>
+      <AppNavbar />
 
       {/* Main Content */}
       <div className="container mt-5">
@@ -59,13 +54,23 @@ const PrintJobs: React.FC = () => {
         {printJobs.length === 0 ? (
           <p>No print jobs available.</p>
         ) : (
-          <div className="list-group">
+          <div className="row">
             {printJobs.map((job) => (
-              <div key={job.id} className="list-group-item">
-                <h5>Print Job ID: {job.id}</h5>
-                <p>Customized Weapon ID: {job.customized_weapon_id}</p>
-                <p>Status: {job.status}</p>
-                <p>Created At: {formatDate(job.created_at)}</p>
+              <div key={job.id} className="col-md-4 mb-4">
+                <div className="card shadow-sm">
+                  <div className="card-body">
+                    <h5 className="card-title">Print Job ID: {job.id}</h5>
+                    <p className="card-text">
+                      <strong>Customized Weapon ID:</strong> {job.customized_weapon_id}
+                    </p>
+                    <p className="card-text">
+                      <strong>Status:</strong> {job.status}
+                    </p>
+                    <p className="card-text">
+                      <strong>Created At:</strong> {formatDate(job.created_at)}
+                    </p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

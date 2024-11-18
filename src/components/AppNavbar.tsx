@@ -20,8 +20,8 @@ const AppNavbar: React.FC = () => {
           {isAuthenticated && (
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link className="nav-link" to="/dashboard">
-                  Dashboard
+                <Link className="nav-link" to="/home">
+                  Home
                 </Link>
               </li>
               <li className="nav-item">

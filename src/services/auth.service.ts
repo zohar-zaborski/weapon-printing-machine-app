@@ -32,8 +32,6 @@ const store = getDefaultStore();
  * @returns A promise resolving with the server response.
  */
 const register = async (username: string, email: string, password: string) => {
-  console.log('Register Payload:', { username, email, password });
-
   return axios.post(
     `${API_URL}auth/register`,
     { username, email, password },
@@ -43,7 +41,6 @@ const register = async (username: string, email: string, password: string) => {
       },
     }
   ).then(response => {
-    console.log('Registration Response:', response.data);
     return response.data;
   }).catch(error => {
     console.error('Registration Error:', error.response?.data || error.message);
