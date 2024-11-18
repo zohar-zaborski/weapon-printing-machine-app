@@ -7,7 +7,7 @@ export const getCustomizations = async () => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Unauthorized: No token found.');
 
-  const response = await axios.get(`${REACT_APP_API_URL}/customize`, {
+  const response = await axios.get(`${REACT_APP_API_URL}/customize/`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -26,7 +26,7 @@ export const createCustomization = async (payload: {
     }
 
     const response = await axios.post(
-      `${REACT_APP_API_URL}/customize`,
+      `${REACT_APP_API_URL}/customize/`,
       payload,
       {
         headers: {

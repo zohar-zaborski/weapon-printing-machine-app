@@ -79,7 +79,7 @@ const SavedCustomizations: React.FC = () => {
                   <div className="card-body">
                     <h5 className="card-title">Weapon ID: {customization.weapon_id}</h5>
                     <p className="card-text">
-                      <strong>Parts:</strong> {customization.parts.join(", ")}
+                      <strong>Parts IDs:</strong> {customization.parts.join(", ")}
                     </p>
                     <p className="card-text">
                       <strong>Print Job ID:</strong> {customization.id}
