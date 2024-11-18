@@ -2,8 +2,7 @@ import axios from 'axios';
 import { getDefaultStore } from 'jotai';
 import { tokenAtom, authAtom } from '../atoms/authAtoms';
 import qs from 'qs'; // Install this with `npm install qs` if not already
-
-const API_URL = 'http://127.0.0.1:8000/';
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 /**
  * Validates a JWT token by decoding it and checking its expiration.
@@ -21,7 +20,6 @@ const isTokenValid = (token: string): boolean => {
   }
 };
 
-// Get the default Jotai store
 const store = getDefaultStore();
 
 /**
@@ -33,7 +31,7 @@ const store = getDefaultStore();
  */
 const register = async (username: string, email: string, password: string) => {
   return axios.post(
-    `${API_URL}auth/register`,
+    `${REACT_APP_API_URL}/auth/register`,
     { username, email, password },
     {
       headers: {
@@ -58,7 +56,7 @@ const register = async (username: string, email: string, password: string) => {
  */
 const login = async (username: string, password: string) => {
   const response = await axios.post(
-    `${API_URL}auth/token`,
+    `${REACT_APP_API_URL}/auth/token`,
     qs.stringify({ username, password }), // Use form-urlencoded format
     {
       headers: {
@@ -75,7 +73,6 @@ const login = async (username: string, password: string) => {
     store.set(tokenAtom, access_token);
     store.set(authAtom, true);
   } else {
-    // Handle invalid token
     localStorage.removeItem('token');
     store.set(tokenAtom, null);
     store.set(authAtom, false);
@@ -105,29 +102,11 @@ const getProtectedResource = async (endpoint: string) => {
     throw new Error('Unauthorized: Invalid or expired token.');
   }
 
-  return axios.get(`${API_URL}/${endpoint}`, {
+  return axios.get(`${REACT_APP_API_URL}/${endpoint}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
-
-/**
- * Fetches the list of weapons from the backend.
- * @returns A promise resolving to the weapons data.
- */
-const getWeapons = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('Unauthorized: No token found.');
-    }
-  
-    const response = await axios.get(`${API_URL}weapons/weapons`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  
-    return response.data; // The array of weapons
-  };
-  
   export default {
     register,
     login,

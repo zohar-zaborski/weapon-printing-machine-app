@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { weaponsAtom, partsAtom } from "../atoms/customizationAtoms";
-import {
-  getCustomizations,
-  createCustomization,
-} from "../services/customization.service";
+import { createCustomization } from "../services/customization.service";
 import { getParts } from "../services/parts.service";
-import { Weapon, Part, Customization } from "../types";
+import { Weapon, Part } from "../types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getWeapons } from "../services/weapons.service";
 import AppNavbar from "./AppNavbar";

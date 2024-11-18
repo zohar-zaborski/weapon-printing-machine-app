@@ -5,8 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { useAtom } from "jotai";
-import { authAtom } from "./atoms/authAtoms";
+
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -16,8 +15,7 @@ import PrintJobs from "./components/PrintJobs";
 import Home from "./pages/Home";
 
 const App: React.FC = () => {
-  const [isAuthenticated] = useAtom(authAtom);
-
+  
   return (
     <Router>
       <Routes>
