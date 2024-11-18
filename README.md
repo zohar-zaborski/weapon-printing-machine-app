@@ -60,7 +60,7 @@ src/
     # or
     yarn start
     ```
-
+6. Login with user: admin password: admin or create a user by yourself.
 
 ## Further Elaboration
 - Possible Features Implementations:
@@ -69,7 +69,7 @@ src/
     It's also possible to add a counter that will be specific to each weapon, because every weapon has different printing time.
     - `More Fields`: Generating more "Real world" fields, like Unique ID of the weapon, a serial number. More fields:
                     Color, Magazine Size, etc.
-
+    
 ## Screens
 Typical Work flow of the user(Logging in, Home page, create Customization, send it to print, and watch the prints list):
 ![Demo GIF](/demo.gif)
