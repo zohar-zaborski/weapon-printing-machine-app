@@ -1,46 +1,80 @@
-# Getting Started with Create React App
+# Weapon Printing App
+## Frontend
+### Zohar Zaborski
+This is the frontend application for the Weapon Printing Machine project. It provides an interactive user interface to customize weapons, manage saved customizations, view print jobs, and more.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Setup Instructions](#setup-instructions)
+- [Further Elaboration](#further-improvements)
+- [Screens](#screens)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Features
+- **User Authentication**: Secure login and registration system.
+- **Customization Dashboard**: Select weapons, customize with parts, and save your configurations.
+- **Print Jobs Management**: View and manage print job statuses.
+- **Upcoming Weapons**: Display a mock section for future weapon updates.
+- **Responsive Design**: Fully responsive and user-friendly interface.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Project Structure
+The main components are organized as follows:
+```bash
+src/
+├── components/          # Reusable UI components (e.g., Navbar, Customizer, etc.)
+├── pages/               # Page-level components (e.g., Dashboard, SavedWeapons, etc.)
+├── services/            # API service functions
+├── atoms/               # State management with Jotai
+├── mockData/            # Mock data for development
+├── media/               # Images and other static media assets
+├── styles/              # Global and component-specific styles
+├── App.tsx              # Main app component
+├── index.tsx            # Entry point of the application
+```
 
-### `npm test`
+## Setup Instructions
+ 
+1. Clone the repository(if you downloaded via zip file, skip this part):
+    https://github.com/zohar-zaborski/weapon-printing-machine-app.git
+    cd weapon-printing-machine-app
+2.Install dependencies:
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+3. Set up environment variables: Create a .env file in the project root and add the following:
+    ```bash
+    REACT_APP_API_URL=http://127.0.0.1:8000 #default port for React
+    ```
+4. Use this command to disable version mismatch in React TS:
+    ```bash
+    export NODE_OPTIONS=--openssl-legacy-provider
+    ```
+5. Start the development server:
+    ```bash
+    npm start
+    # or
+    yarn start
+    ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Further Elaboration
+- Possible Features Implementations:
+    `Advanced Exceptions`: Currently, the project utilizes a simple Exceptions configuration. Future enhancements could include a more advanced and customized exceptions.
+    `Adding Logging`:Managing backend with comprehensive logging can be very useful for tracking data and issues that may rise.
+    `Database Integration`: The project now relies on an in-memory repository for simplicity, but future versions could incorporate a database like PostgreSQL or MongoDB. This would support persistence, scalability, and more complex query capabilities for large policy and rule datasets. 
+    `More Fields`: Generating more "Real world" fields, like Unique ID of the weapon, a serial number. More fields:
+                    Color, Magazine Size, etc.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Screens
+Typical Work flow of the user(Logging in, Home page, create Customization, send it to print, and watch the prints list):
+![Demo GIF](/demo.gif)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
